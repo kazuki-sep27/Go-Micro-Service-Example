@@ -8,6 +8,7 @@
                 <hr>
                 <a id="brokerBtn" class="btn btn-primary" href="javascript:void(0)" role="button">Test Broker</a>
                 <a id="authBrokerBtn" class="btn btn-primary" href="javascript:void(0)" role="button">Test Auth</a>
+                <a id="logBtn" class="btn btn-primary" href="javascript:void(0)" role="button">Test Log</a>
 
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted">Output shows here...</span>
@@ -35,28 +36,65 @@
     <script>
         let brokerBtn = document.getElementById("brokerBtn");
         let authBrokerBtn = document.getElementById("authBrokerBtn");
+        let logBtn = document.getElementById("logBtn");
         let output = document.getElementById("output");
         let sent = document.getElementById("payload");
         let received = document.getElementById("received");
 
+        logBtn.addEventListener("click", function() {
+            const payload = {
+                action: "log",
+                log: {
+                    name: "event",
+                    data: "Some kind of data"
+                }
+            }
+
+            const headers = new Headers()
+            headers.append('Content-Type', 'application/json')
+
+            const body = {
+                method: "POST",
+                body: JSON.stringify(payload),
+                headers: headers,
+            }
+
+            fetch("http:\/\/localhost:8080/handler",body).then((response) => {
+                console.log(response);
+                return response.json();
+            }).then((data) => {
+                sent.innerHTML = JSON.stringify(payload, undefined, 4);
+                received.innerHTML = JSON.stringify(data, undefined, 4);
+
+                if(data.error) {
+                    output.innerHTML = `<br><strong>Error :</strong> ${data.message}`
+                }else{
+                    output.innerHTML = `<br><strong>Response from Log service</strong>: ${data.message}`
+                }
+            }).catch((err) => {
+                output.innerHTML = `Faltal Error : ${err}`;
+            })
+        });
+        
         brokerBtn.addEventListener("click", function() {
             const body = {
                 method: "POST",
             }
 
-            fetch("http:\/\/localhost:8080",body).then((response) => {
+            fetch("http:\/\/localhost:8080/handler",body).then((response) => {
+                console.log(response);
                 return response.json();
             }).then((data) => {
-                sent.innerHTML = "empty post request";
-                received.innerHTML = JSON.stringify(data, null, 2);
+                sent.innerHTML = JSON.stringify(payload, undefined, 4);
+                received.innerHTML = JSON.stringify(data, undefined, 4);
 
                 if(data.error) {
-                    console.log(data.message);
+                    output.innerHTML = `<br><strong>Error :</strong> ${data.message}`
                 }else{
-                    output.innerHTML = `<br><strong>Response from broker service</strong>: ${data.message}`
+                    output.innerHTML = `<br><strong>Response from Auth service</strong>: ${data.message}`
                 }
             }).catch((err) => {
-                output.innerHTML = err;
+                output.innerHTML = `Faltal Error : ${err}`;
             })
         });
 

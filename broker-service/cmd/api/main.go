@@ -24,6 +24,6 @@ func main() {
 	// start http server
 	err := srv.ListenAndServe()
 	if err != nil {
-		log.Fatalf("Server failed to start: %v", err)
+		log.Panic()
 	}
 }
