@@ -40,7 +40,7 @@ func (app *Config) HandlerSubmission(w http.ResponseWriter, r *http.Request) {
 		app.errorJSON(w,err)
 		return
 	}
-
+	
 	switch requestPayload.Action {
 	case "auth":
 		app.authenticate(w, requestPayload.Auth)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"log-service/data"
 	"net/http"
@@ -52,8 +53,8 @@ func main() {
 	log.Println("Starting server on port " + webPort)
 
 	srv := &http.Server{
-		Addr:         ":" + webPort,
-		Handler:      app.routes(),
+		Addr:    fmt.Sprintf(":%s", webPort),
+		Handler: app.routes(),
 	}
 
 	err = srv.ListenAndServe()
