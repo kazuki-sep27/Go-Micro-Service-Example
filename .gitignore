@@ -1,5 +1,6 @@
 /.vscode
 /Go-Micro.code-workspace
 /project/db-data/postgres/*
+/project/db-data/mongo/*
 
 !.gitkeep
