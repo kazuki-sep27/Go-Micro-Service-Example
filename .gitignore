@@ -2,5 +2,6 @@
 /Go-Micro.code-workspace
 /project/db-data/postgres/*
 /project/db-data/mongo/*
+/project/db-data/rabbitmq/*
 
 !.gitkeep
